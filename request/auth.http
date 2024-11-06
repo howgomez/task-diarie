@@ -1,0 +1,24 @@
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "gas123",
+    "email": "gas123@test.com",
+    "password": "gas123"
+}
+
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "gas123@test.com",
+    "password": "gas123"
+}
+
+###
+POST http://localhost:3000/api/logout
+
+###
+GET http://localhost:3000/api/auth/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE2MjI1NjI0MDAiLCJpYXQiOjE2MTI2NDk0ODAsImV4cCI6MTYxMjY0OTQ4MCwiaXNzIjoiaHR0cHM6Ly9zdG9yYWdlLmNvbS9hdXRoL2xvY2FsaG9zdCIsImlhdCI6MTYxMjY0OTQ4MCwiZXhwIjoxNjEyNjY5NDgwfQ.3-3t-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0
