@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ColorThief from 'colorthief';
 
-
-
-const ImageContainer = ({ src } : { src?: string | null }) => {
+const ImageContainer = ({ src, children }: { src?: string; children?: React.ReactNode }) => {
   const [gradient, setGradient] = useState('');
   const imgRef = useRef<HTMLImageElement | null>(null);
 
@@ -39,20 +37,22 @@ const ImageContainer = ({ src } : { src?: string | null }) => {
   }, [src]);
 
   return (
-    <div
-      className="relative  rounded-t-lg overflow-hidden shadow-lg flex items-center justify-center size-[350px]"
+     <div
+      className="relative rounded-t-lg overflow-hidden shadow-lg flex flex-col"
       style={{
         background: gradient || 'linear-gradient(135deg, #ddd, #eee)',
       }}
     >
-      <img
+     <div className='flex items-center justify-center'>
+     <img
         ref={imgRef}
         src={ src || ''}
         crossOrigin="anonymous"
         alt=""
-        className="w-full h-auto object-cover"
       />
-    </div>
+     </div>
+     {children}
+   </div>
   );
 };
 

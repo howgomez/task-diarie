@@ -13,7 +13,7 @@ router.get('/task', auth, getTasks);
 router.get('/task/public', getPublicTasks);
 router.get('/task/:id', auth, getTask);
 router.post('/task', auth, validateSchema(createTaskSchema), upload.single("image"), createTask);
-router.put('/task/:id', auth, updateTask);
+router.put('/task/:id', auth, upload.single("image"), updateTask);
 router.delete('/task/:id', auth, deleteTask);
 
 export default router;

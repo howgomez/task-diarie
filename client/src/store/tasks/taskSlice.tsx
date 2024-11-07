@@ -48,6 +48,13 @@ const taskSlice = createSlice({
             }
 
         },
+
+        updateTask: (state, action: PayloadAction<Task>) => {
+            const updateTask = action.payload;
+            state.publicTasks = state.publicTasks.map((task) =>  task._id === updateTask._id ? updateTask : task )
+            state.userTasks = state.userTasks.map((task) =>  task._id === updateTask._id ? updateTask : task )
+        },
+
         setTasksLoading: (state, action: PayloadAction<boolean>) => {
           state.loading = action.payload;
         },
@@ -57,5 +64,11 @@ const taskSlice = createSlice({
       },
 });
 
-export const { createTask, setTasksLoading, setTasksError, loadUserTasks, loadPublicTasks } = taskSlice.actions;
+export const { 
+  updateTask,
+  createTask, 
+  setTasksLoading, 
+  setTasksError, 
+  loadUserTasks, 
+  loadPublicTasks } = taskSlice.actions;
 export default taskSlice;

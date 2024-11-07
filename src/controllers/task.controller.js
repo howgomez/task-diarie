@@ -70,7 +70,7 @@ export const createTask = async (req, res) => {
         folder: 'products',
         public_id: req.file.filename,
         use_filename: true,
-        transformation: { width: 300, height: 300, crop: "fill", gravity: "auto" },
+        // transformation: { width: 300, height: 300, crop: "fill", gravity: "auto" },
       });
 
       imageUrl = result.secure_url;
@@ -99,13 +99,13 @@ export const createTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, description, visibility } = req.body;
     //validation
     if (!title && !description) return res.status(400).json({ message: "Missing title or description, please try again" });
 
     const taskUpdated = await Task.findOneAndUpdate(
       { _id: id },
-      { title, description },
+      { title, description, visibility },
       { new: true }
     );
 
