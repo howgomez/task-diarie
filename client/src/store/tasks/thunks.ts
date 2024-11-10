@@ -1,6 +1,6 @@
 import { AppDispatch, RootState } from "../store"
 import { Task } from "../types/types";
-import { createTask, loadPublicTasks, loadUserTasks, setTasksError, setTasksLoading, updateTask } from "./taskSlice";
+import { createTask, loadPrivateTask, loadPublicTasks, loadUserTasks, setTasksError, setTasksLoading, updateTask } from "./taskSlice";
 
 
 export const fetchUserTasks = () => {
@@ -16,10 +16,16 @@ export const fetchUserTasks = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Ocurrió un error al obtener las tareas");
       }
+      
       const data: Task[] = await response.json();
+
+      const publicTasks = data.filter((task) => task.visibility === "public");
+      const privateTasks = data.filter((task) => task.visibility === "private");
       console.log("Tareas obtenidas: ", data);
 
       dispatch(loadUserTasks(data)); // Guarda en userTasks
+      dispatch(loadPublicTasks(publicTasks));
+      dispatch(loadPrivateTask(privateTasks));
       dispatch(setTasksLoading(false));
 
     } catch (error) {
@@ -56,6 +62,33 @@ export const fetchPublicTasks = () => {
     }
   };
 };
+
+export const fetchPrivateTasks = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setTasksLoading(true));
+    try {
+      const response = await fetch("http://localhost:3000/api/task/private", {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ocurrió un error al obtener las tareas privadas");
+      }
+  
+      const data: Task[] = await response.json();
+      console.log("Tareas obtenidas: ", data);
+  
+      dispatch(loadPrivateTask(data)); // Guarda en userTasks
+      dispatch(setTasksLoading(false));
+  
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Ocurrió un error";
+      dispatch(setTasksError(errorMessage));
+    }
+  }
+}
 
 
 export const startCreateTask = ( taskData: FormData ) => {

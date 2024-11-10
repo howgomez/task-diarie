@@ -1,20 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Task } from "../types/types";
 
-// interface Task {
-//   id: string;
-//   title: string;
-//   description: string;
-//   image?: string | null;
-//   visibility: 'private' | 'public';
-// }
-
 interface TaskState {
     user: {
         _id: string;
         username: string;
     }
     userTasks: Task[],
+    privateTasks: Task[],
     publicTasks: Task[],
     loading: boolean;
     error: string | null;
@@ -25,6 +18,7 @@ const initialState: TaskState = {
     user: { _id: '', username: '' },
     userTasks: [],
     publicTasks: [],
+    privateTasks: [],
     loading: false,
     error: null,
 }
@@ -36,14 +30,19 @@ const taskSlice = createSlice({
         loadUserTasks: (state, action: PayloadAction<Task[]>) => {
           state.userTasks = action.payload;
         },
+        loadPrivateTask: (state, action: PayloadAction<Task[]>) => {
+          state.privateTasks = action.payload;
+        },
 
         loadPublicTasks: (state, action: PayloadAction<Task[]>) => {
             state.publicTasks = action.payload;
           },
 
         createTask: (state, action: PayloadAction<Task>) => { // Especifica el tipo aquí
-            state.userTasks.push(action.payload);
-            if(action.payload.visibility === 'public') {
+          if(action.payload.visibility === 'private') {
+                state.privateTasks.push(action.payload);
+            }
+          if(action.payload.visibility === 'public') {
                 state.publicTasks.push(action.payload);
             }
 
@@ -69,6 +68,7 @@ export const {
   createTask, 
   setTasksLoading, 
   setTasksError, 
-  loadUserTasks, 
+  loadUserTasks,
+  loadPrivateTask, 
   loadPublicTasks } = taskSlice.actions;
 export default taskSlice;

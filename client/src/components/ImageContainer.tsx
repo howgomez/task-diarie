@@ -38,17 +38,18 @@ const ImageContainer = ({ src, children }: { src?: string; children?: React.Reac
 
   return (
      <div
-      className="relative rounded-t-lg overflow-hidden shadow-lg flex flex-col"
+      className="relative rounded-lg overflow-hidden shadow-lg flex gap-4 flex-col sm:flex-row"
       style={{
         background: gradient || 'linear-gradient(135deg, #ddd, #eee)',
       }}
     >
-     <div className='flex items-center justify-center'>
+     <div className='flex items-center justify-center w-full sm:w-[350px] h-auto sm:h-[300px] bg-black/50 rounded-t-lg'>
      <img
         ref={imgRef}
         src={ src || ''}
         crossOrigin="anonymous"
         alt=""
+        className='w-full h-full object-cover rounded-r-md'
       />
      </div>
      {children}

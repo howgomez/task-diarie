@@ -15,7 +15,6 @@ cloudinary.config({
 export const getTasks = async (req, res) => {
 
   try {
-    console.log(req.user.id)
     const tasks = await Task.find({ user: req.user.id });
     if (!tasks) return res.status(404).json({ message: "No tasks found" });
 
@@ -38,16 +37,26 @@ export const getTask = async (req, res) => {
 
 export const getPublicTasks = async (req, res) => {
   try {
-    console.log("Fetching public tasks...");
 
     const tasks = await Task.find({ visibility: "public" }).populate("user", "username");
-
-    console.log("Tasks found:", tasks);
 
     if (!tasks) return res.status(404).json({ message: "No tasks found" });
 
     res.status(200).json(tasks);
 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const getPrivateTasks = async (req, res) => {s
+  try {
+    
+    const userId = req.user.id;
+    console.log('soy el ID privado', userId);
+    const privateTask = await Task.find({ user: userId, visibility: "private" });
+    if (!privateTask) return res.status(404).json({ message: "No privateTask found" });
+    res.status(200).json(privateTask);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

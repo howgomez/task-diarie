@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/roboto-mono": "^5.1.0",
+    "@formkit/tempo": "^0.1.2",
     "@hookform/resolvers": "^3.9.1",
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",

@@ -4,7 +4,8 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { useAppDispatch } from '../store/store';
 import { startCreateTask, startUpdateTask } from '../store/tasks/thunks';
 import { Task } from '../store/types/types';
-
+import { SiGitbook } from "react-icons/si";
+import { FiEdit2 } from "react-icons/fi";
 interface TaskFormModalProps {
   task: Task | null;
   isOpen: boolean;
@@ -29,7 +30,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
     } else {
       setTitle("");
       setDescription("");
-      setImage(null);
+      setImage(null); 
       setIsVisible(false);
     }
   }, [task]);
@@ -83,13 +84,13 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
                 onChange={(e) => setTitle(e.target.value)}
               />
 
-              <input 
-                type="text" 
+              <textarea 
                 name="description" 
                 className='text-md text-black outline-none px-2 border-b-2'
                 placeholder='Descripción de la tarea'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                rows={5}
               />
 
               <div className='flex items-center gap-2 pl-2'>
@@ -117,7 +118,12 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
                 </button>
                 <p>Visibilidad: {isVisible ? "Privada" : "Pública"}</p>
               </div>
-              <button type="submit">{task ? "Actualizar Tarea" : "Crear Tarea"}</button>
+              <button 
+              type="submit">
+                {task 
+                ? <span className='flex items-center justify-center gap-4 bg-blue-500 p-2 text-1xl'>Editar tarea <FiEdit2/> </span>
+                : <span className='flex items-center justify-center gap-4 bg-green-500 p-2 text-1xl'>Crear tarea <SiGitbook/></span>}
+              </button>
             </form>
           </div>
         </div>

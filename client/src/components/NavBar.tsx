@@ -2,57 +2,52 @@ import { RootState, useAppDispatch } from '../store/store';
 import { useSelector } from 'react-redux';
 import { logoutUser } from '../store/auth/thunks';
 import { RiMenuLine } from "react-icons/ri";
-import { useState, useRef, useEffect } from 'react';
-
+import { useEffect } from 'react';
+import { FaFolder } from "react-icons/fa";
+import { fetchUserTasks } from '../store/tasks/thunks';
+import DropdownButtons from './DropDownButtons';
+import TaskDropDown from './TaskDropDown';
 const NavBar = () => {
-    const { username } = useSelector((state: RootState) => state.auth);
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
+    const { username, uid } = useSelector((state: RootState) => state.auth);
     const dispatch = useAppDispatch();
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+    useEffect(() => {
+        if (uid) {
+            dispatch(fetchUserTasks());
+        }
+    }, [uid, dispatch]);
 
     const onLogout = () => {
         dispatch(logoutUser());
-        setIsOpen(false); // Cierra el menú después de cerrar sesión
     };
 
-    // Cierra el menú al hacer clic fuera
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
     return (
-        <nav className="bg-[#A8D5BA] text-[#6F4F40] p-4">
+        <nav className="bg-blue-500 text-[#ffffffeb] p-4">
             <ul className="flex justify-between items-center">
-                <li className=" font-bold text-xl">Dashboard</li>
+                <li className="font-bold text-xl">Diario Online</li>
                 <div className="relative flex items-center">
-                    <span className="font-bold mr-4 hidden sm:block">Hello, {username}</span>
-                    <button onClick={toggleDropdown} className="text-3xl">
-                        <RiMenuLine/>
-                      </button>
+                    <div className='flex gap-4'>
+                        {/* Dropdown de tareas privadas */}
+                        <DropdownButtons
+                            icon={<FaFolder />}
+                            dropdownContent={<TaskDropDown />} />
 
-                    {isOpen && (
-                        <div 
-                            ref={dropdownRef} 
-                            className="absolute right-0 mt-20 w-56 bg-white shadow-lg rounded-md p-4 text-black z-50"
-                        >                            
-                            <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100 rounded">Editar perfil</a>
-                            <a href="#" onClick={onLogout} className="block px-4 py-2 text-sm hover:bg-gray-100 rounded">Cerrar sesión</a>
-                        </div>
-                    )}
+                        {/* Dropdown de menú de usuario */}
+                        <DropdownButtons
+                            icon={<RiMenuLine />}
+                            dropdownContent={
+                                <div className="flex flex-col gap-2">
+                                    <span className="font-bold hidden sm:block ml-4 border-b-2 border-blue-500 pb-2">Hello, {username}</span>
+                                    <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100 rounded">Crear nueva tarea</a>
+                                    <a href="#" onClick={onLogout} className="block px-4 py-2 text-sm hover:bg-gray-100 rounded">Cerrar sesión</a>
+                                </div>
+                            }
+                        />
+                    </div>
+
+
                 </div>
             </ul>
-
         </nav>
     );
 };
