@@ -17,8 +17,9 @@ export const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user.id });
     if (!tasks) return res.status(404).json({ message: "No tasks found" });
+    const sortedTasks = tasks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    res.status(200).json(tasks);
+    res.status(200).json(sortedTasks);
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -39,10 +40,10 @@ export const getPublicTasks = async (req, res) => {
   try {
 
     const tasks = await Task.find({ visibility: "public" }).populate("user", "username");
+    const sortedTasks = tasks.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (!sortedTasks) return res.status(404).json({ message: "No tasks found" });
 
-    if (!tasks) return res.status(404).json({ message: "No tasks found" });
-
-    res.status(200).json(tasks);
+    res.status(200).json(sortedTasks);
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -56,7 +57,9 @@ export const getPrivateTasks = async (req, res) => {s
     console.log('soy el ID privado', userId);
     const privateTask = await Task.find({ user: userId, visibility: "private" });
     if (!privateTask) return res.status(404).json({ message: "No privateTask found" });
-    res.status(200).json(privateTask);
+    const sortedTasks = privateTask.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.status(200).json(sortedTasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

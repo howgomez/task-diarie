@@ -50,9 +50,8 @@ export const fetchPublicTasks = () => {
       }
 
       const data: Task[] = await response.json();
-      const sortedData = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-      dispatch(loadPublicTasks(sortedData)); // Guarda las tareas ordenadas
+      dispatch(loadPublicTasks(data)); // Guarda las tareas ordenadas
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Ocurrió un error";

@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 const TaskDropDown = () => {
 
     const { privateTasks } = useSelector((state: RootState) => state.task);
-  return (
+
+    return (
     <div className="absolute right-0 top-[-40px] w-64 h-auto bg-white shadow-lg rounded-md p-4 text-black z-50 flex flex-col gap-2 ">
+        <span>Tareas privadas</span>
     {
         privateTasks.length > 0 ? (
             privateTasks.map((task) => (

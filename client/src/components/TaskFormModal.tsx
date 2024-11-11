@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { useAppDispatch } from '../store/store';
+import { RootState, useAppDispatch } from '../store/store';
 import { startCreateTask, startUpdateTask } from '../store/tasks/thunks';
 import { Task } from '../store/types/types';
 import { SiGitbook } from "react-icons/si";
 import { FiEdit2 } from "react-icons/fi";
+import { useSelector } from 'react-redux';
 interface TaskFormModalProps {
   task: Task | null;
   isOpen: boolean;
@@ -13,11 +14,14 @@ interface TaskFormModalProps {
 }
 
 const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }) => {
+  const [formError, setFormError] = useState<string | null>(null);
+  const { error } = useSelector((state: RootState) => state.task);
   const [title, setTitle] = useState(task ? task.title : "");
   const [description, setDescription] = useState(task ? task.description : "");
   const [image, setImage] = useState<File | null>(null);
   const [isVisible, setIsVisible] = useState(task ? task.visibility === 'private' : false);
   const dispatch = useAppDispatch();
+  console.log(error);
   
   const modalBackgroundRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,8 +55,20 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
     }
   };
 
+  const validateForm = () => {
+    if (!title || !description) {
+      setFormError("Por favor, completa todos los campos.");
+      return false;
+    }
+    setFormError(null);
+    return true;
+  };
+
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!validateForm()) return;
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -74,6 +90,9 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
         <div className="modal-background" onClick={handleCloseModal} ref={modalBackgroundRef}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <form onSubmit={handleSubmit} className='text-black flex flex-col gap-4'>
+            {formError && <p className='text-red-500'>{formError}</p>}
+            {error && <p className='text-red-500'>{error}</p>}
+
               <h2>{task ? "Editar Tarea" : "Crear Nueva Tarea"}</h2>
               <input 
                 type="text" 
@@ -121,8 +140,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({ task, isOpen, setIsOpen }
               <button 
               type="submit">
                 {task 
-                ? <span className='flex items-center justify-center gap-4 bg-blue-500 p-2 text-1xl'>Editar tarea <FiEdit2/> </span>
-                : <span className='flex items-center justify-center gap-4 bg-green-500 p-2 text-1xl'>Crear tarea <SiGitbook/></span>}
+                ? <span className='flex items-center justify-center gap-4 bg-blue-500 p-2 text-1xl animate__animated animate__bounceIn'>Editar tarea <FiEdit2/> </span>
+                : <span className='flex items-center justify-center gap-4 bg-green-500 p-2 text-1xl animate__animated animate__pulse animate__infinite'>Crear tarea <SiGitbook/></span>}
               </button>
             </form>
           </div>

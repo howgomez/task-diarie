@@ -8,7 +8,7 @@ export interface Task {
   image?: string;
   visibility: 'public' | 'private';
   date: string;
-  user: { _id:string};
+  user: { _id:string, username: string};
   createdAt: string;
   updatedAt: string;
 }

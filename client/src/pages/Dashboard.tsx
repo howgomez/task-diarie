@@ -7,7 +7,6 @@ import ImageContainer from "../components/ImageContainer";
 import TaskFormModal from "../components/TaskFormModal";
 import { fetchPublicTasks, startDeleteTask } from "../store/tasks/thunks";
 import { Task } from "../store/types/types";
-import NavBar from "../components/NavBar";
 
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -19,7 +18,6 @@ export const Dashboard = () => {
   const { publicTasks } = useSelector((state: RootState) => state.task);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
   const onEditTask = (task: Task) => {
     setSelectedTask(task);
     setIsOpen(true); // Abrir modal para editar
@@ -38,10 +36,12 @@ export const Dashboard = () => {
    }
   }, [uid, dispatch]);
 
-
+  const handleTaskDelete = (taskId: string )   => {
+    // Aplicar clase de animación de fade-out al eliminar
+    setTimeout(() => dispatch(startDeleteTask(taskId)), 500);
+  };
   return (
     <div className="">
-        {/* <NavBar/> */}
       <div>
         <div className="flex flex-col items-center mt-10 gap-4 w-full sm:w-[60%] m-auto p-4">
           <input 
@@ -54,11 +54,11 @@ export const Dashboard = () => {
           onClick={onCreateTask}>Crear Nueva Tarea</button>
         </div>
         <TaskFormModal task={selectedTask} isOpen={isOpen} setIsOpen={setIsOpen} />
-        <main className="w-full sm:w-[60%] m-auto">
+        <main className="w-full sm:w-[60%] m-auto ">
         <h1 className="text-left text-md sm:text-xl text-gray-400 p-4">Public tasks for the users</h1>
-        <div className="flex flex-col gap-4 justify-center">
+        <div className="flex flex-col gap-4 justify-center ">
           {publicTasks.map((task, index) => (
-            <div key={index} className="p-4">
+            <div key={index} className='p-4'>
               <ImageContainer src={task.image}>
               <div className="text-left p-2 text-white">
                 <div className="w-full sm:w-[500px]">
@@ -67,9 +67,9 @@ export const Dashboard = () => {
                 <p className="text-white/50">{task.description}</p>
                 </div>
                 {uid === task.user._id && (
-                  <div className="flex gap-2 sm:absolute  sm:right-0 sm:top-0 mt-4 mr-4">
+                  <div className="flex gap-2 sm:absolute  sm:right-0 sm:top-0 mt-4 mr-4 ">
                     <button 
-                      onClick={() => dispatch(startDeleteTask(task._id))} 
+                      onClick={ () => handleTaskDelete(task._id) }
                       className="bg-black/80 px-4 py-1 rounded-md">
                       <div className="flex text-1xl items-center gap-2 text-[#F4212E]">
                         <RiDeleteBin5Line/>
@@ -99,3 +99,119 @@ export const Dashboard = () => {
   );
 };
 
+
+
+
+// import { useEffect, useState } from "react";
+// import { RootState, useAppDispatch } from "../store/store";
+// import { useSelector } from "react-redux";
+// import ImageContainer from "../components/ImageContainer";
+// import TaskFormModal from "../components/TaskFormModal";
+// import { fetchPublicTasks, startDeleteTask } from "../store/tasks/thunks";
+// import { Task } from "../store/types/types";
+// import { FiEdit2 } from "react-icons/fi";
+// import { RiDeleteBin5Line } from "react-icons/ri";
+// import { FaUserAlt } from "react-icons/fa";
+// import "animate.css"; // Importa animate.css
+
+// export const Dashboard = () => {
+//   const { uid } = useSelector((state: RootState) => state.auth);
+//   const { publicTasks } = useSelector((state: RootState) => state.task);
+//   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [animateCreate, setAnimateCreate] = useState(false);
+
+//   const onEditTask = (task: Task) => {
+//     setSelectedTask(task);
+//     setIsOpen(true);
+//   };
+
+//   const onCreateTask = () => {
+//     setSelectedTask(null);
+//     setIsOpen(true);
+//   };
+
+//   const dispatch = useAppDispatch();
+
+//   useEffect(() => {
+//     if (uid) {
+//       dispatch(fetchPublicTasks());
+//     }
+//   }, [uid, dispatch]);
+
+//   const handleTaskDelete = (taskId: string) => {
+//     // Aplicar clase de animación de fade-out al eliminar
+//     setTimeout(() => dispatch(startDeleteTask(taskId)), 500);
+//   };
+
+//   return (
+//     <div className="animate__animated animate__fadeIn"> {/* Animación inicial del dashboard */}
+//       <div className="flex flex-col items-center mt-10 gap-4 w-full sm:w-[60%] m-auto p-4">
+//         <input 
+//           type="text"
+//           placeholder="Search tasks" 
+//           className="rounded-md text-md text-black outline-none p-2 w-full sm:w-[350px] bg-gray-800"
+//         />
+//         <button 
+//           className="w-full sm:w-[350px] bg-blue-500 text-white p-2 rounded-md animate__animated animate__pulse animate__infinite" // Botón con animación de pulso infinito
+//           onClick={() => {
+//             setAnimateCreate(true); // Activa la animación de creación
+//             onCreateTask();
+//           }}>
+//           Crear Nueva Tarea
+//         </button>
+//       </div>
+
+//       <TaskFormModal task={selectedTask} isOpen={isOpen} setIsOpen={setIsOpen} />
+      
+//       <main className="w-full sm:w-[60%] m-auto ">
+//         <h1 className="text-left text-md sm:text-xl text-gray-400 p-4 animate__animated animate__fadeInDown">Public tasks for the users</h1>
+        
+//         <div className="flex flex-col gap-4 justify-center">
+//           {publicTasks.map((task, index) => (
+//             <div 
+//               key={index} 
+//               className={`p-4 ${animateCreate ? 'animate__animated animate__fadeInUp' : ''}`} // Animación al crear nueva tarea
+//             >
+//               <ImageContainer src={task.image}>
+//                 <div className="text-left p-2 text-white">
+//                   <div className="w-full sm:w-[500px]">
+//                     <h4 className="text-gray-200 flex items-center gap-2 py-2 font-bold">
+//                       <FaUserAlt/> <span>@{task.user.username}</span>
+//                     </h4>
+//                     <h3 className="text-2xl font-semibold">{task.title}</h3>
+//                     <p className="text-white/50">{task.description}</p>
+//                   </div>
+                  
+//                   {uid === task.user._id && (
+//                     <div className="flex gap-2 sm:absolute sm:right-0 sm:top-0 mt-4 mr-4">
+//                       <button 
+//                         onClick={() => handleTaskDelete(task._id)} 
+//                         className="bg-black/80 px-4 py-1 rounded-md animate__animated animate__fadeOut" // Fade-out en eliminación
+//                       >
+//                         <div className="flex text-1xl items-center gap-2 text-[#F4212E]">
+//                           <RiDeleteBin5Line/>
+//                           <span>Delete</span>
+//                         </div>
+//                       </button>
+                      
+//                       <button 
+//                         onClick={() => onEditTask(task)} 
+//                         className="bg-black/40 px-4 py-1 rounded-md animate__animated animate__bounceIn" // Animación bounce al editar
+//                       >
+//                         <div className="flex text-1xl items-center gap-2 text-[#FFF200]">
+//                           <FiEdit2/>
+//                           <span className="text-[#FFF200]">Update</span>
+//                         </div>
+//                       </button>
+//                     </div>
+//                   )}
+//                 </div>
+//               </ImageContainer>
+//             </div>
+//           ))}
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
