@@ -3,12 +3,15 @@ import { Task } from "../types/types";
 import { createTask, loadPrivateTask, loadPublicTasks, loadUserTasks, setTasksError, setTasksLoading, updateTask } from "./taskSlice";
 
 
+const API_URL = import.meta.env.VITE_API_URL_BACKEND; //example http://localhost:3000/api/auth
+
+
 export const fetchUserTasks = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(setTasksLoading(true));  
 
     try {
-      const response = await fetch("http://localhost:3000/api/task", {
+      const response = await fetch(`${API_URL}/api/task`, {
         method: "GET",
         credentials: "include"
       })
@@ -40,7 +43,7 @@ export const fetchPublicTasks = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(setTasksLoading(true));
     try {
-      const response = await fetch("http://localhost:3000/api/task/public", {
+      const response = await fetch(`${API_URL}/api/task/public`, {
         method: "GET",
       });
 
@@ -66,7 +69,7 @@ export const fetchPrivateTasks = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(setTasksLoading(true));
     try {
-      const response = await fetch("http://localhost:3000/api/task/private", {
+      const response = await fetch(`${API_URL}/api/task/private`, {
         method: "GET",
         credentials: "include",
       });
@@ -95,7 +98,7 @@ export const startCreateTask = ( taskData: FormData ) => {
     dispatch(setTasksLoading(true));
   
     try {
-      const response = await fetch("http://localhost:3000/api/task", {
+      const response = await fetch(`${API_URL}/api/task`, {
         method: "POST",
         credentials: "include",
         body: taskData,
@@ -126,7 +129,7 @@ export const startDeleteTask = (tasIk: string) => {
     dispatch(setTasksLoading(true));
   
     try {
-      const response = await fetch(`http://localhost:3000/api/task/${tasIk}`, {
+      const response = await fetch(`${API_URL}/api/task/${tasIk}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -152,7 +155,7 @@ export const startUpdateTask = (taskId: string, formData: FormData) => {
     console.log(formData);
     console.log(getState);
     try {
-      const response = await fetch(`http://localhost:3000/api/task/${taskId}`, {
+      const response = await fetch(`${API_URL}/api/task/${taskId}`, {
         method: "PUT",
         credentials: "include",
         body: formData,  // Pasamos formData directamente, sin JSON.stringify
