@@ -32,7 +32,6 @@ const Dropdown = ({ isOpen, onClose, children }: DropdownProps) => {
     );
 };
 
-// Componente DropdownButton reutilizable
 interface DropdownButtonProps {
     icon: React.ReactNode;
     dropdownContent: React.ReactNode;

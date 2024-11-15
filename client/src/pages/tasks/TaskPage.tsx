@@ -16,14 +16,12 @@ const TaskPage = () => {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  if (!task) {
-    return <p>La tarea no fue encontrada.</p>;
-  }
+  if (!task) return navigate('/dashboard');
   
-  const onDeleteTask = () => {
+  
+  const onDeleteTask = async ()  => {
     try {
-      dispatch(startDeleteTask(task._id));
+      await dispatch(startDeleteTask(task._id));
       navigate('/dashboard');
 
     } catch (error) {
@@ -31,6 +29,7 @@ const TaskPage = () => {
     }
 
   }
+  
 
   return (
     <section className='bg-gray-900 flex flex-col-reverse xl:grid xl:grid-cols-2 h-full mt-20 p-4 animate__animated animate__fadeInLeft'>

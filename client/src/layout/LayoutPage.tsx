@@ -11,8 +11,6 @@ export const LayoutPage = ({ children }: LayoutPageProps) => {
 
   const { status } = useSelector((state: RootState) => state.auth);
 
-
-
   return (
     <div className="bg-gray-900 min-h-screen">
       {
