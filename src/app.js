@@ -11,7 +11,7 @@ dotenv.config()
 const app = express();
 app.use(morgan("dev"));
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://task-diarie-d2r3l7o1u-gustavos-projects-131b8237.vercel.app/',
   credentials: true,
 }));
 app.use(express.json());
