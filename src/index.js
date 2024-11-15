@@ -3,7 +3,7 @@ import app from "./app.js";
 import { connectDB } from "./db.js";
 import { PORT } from "./config.js";
 
-
+console.log("Starting server..." + PORT);
 async function main() {
 
   try {
