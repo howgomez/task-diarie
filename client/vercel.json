@@ -1,0 +1,9 @@
+{
+    "builds": [
+      { "src": "src/main.tsx", "use": "@vercel/static-build" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/" }
+    ]
+  }
+  
