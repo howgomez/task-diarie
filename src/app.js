@@ -10,7 +10,10 @@ dotenv.config()
 const app = express();
 app.use(morgan("dev"));
 app.use(cors({
-  origin: 'https://task-diarie-d2r3l7o1u-gustavos-projects-131b8237.vercel.app/',
+  origin: [
+      'https://task-diarie-d2r3l7olu-gustavos-projects-131b8237.vercel.app', // Tu frontend en producción
+      'http://localhost:5173' // Tu frontend local para desarrollo
+  ],
   credentials: true,
 }));
 app.use(express.json());
