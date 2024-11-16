@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(cors({
   origin: [
-      'https://task-diarie-d2r3l7olu-gustavos-projects-131b8237.vercel.app', // Tu frontend en producción
+      'https://crud-task-blond.vercel.app/', // Tu frontend en producción
       'http://localhost:5173' // Tu frontend local para desarrollo
   ],
   credentials: true,
