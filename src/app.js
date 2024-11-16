@@ -12,8 +12,10 @@ app.use(morgan("dev"));
 app.use(cors({
   origin: [
       'https://crud-task-blond.vercel.app/', // Tu frontend en producción
-      'http://localhost:5173' // Tu frontend local para desarrollo
-  ],
+      'http://localhost:5173', // Tu frontend local para desarrollo
+      'https://crud-task-chonhu8uh-gustavos-projects-131b8237.vercel.app/',
+      'https://task-diarie-production.up.railway.app/'
+    ],
   credentials: true,
 }));
 app.use(express.json());
