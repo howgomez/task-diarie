@@ -3,7 +3,7 @@ import { Task } from "../types/types";
 import { createTask, loadPrivateTask, loadPublicTasks, loadUserTasks, setTasksError, setTasksLoading, updateTask } from "./taskSlice";
 
 
-const API_URL = import.meta.env.VITE_API_URL_BACKEND; //example http://localhost:3000/api/auth
+const API_URL = import.meta.env.VITE_API_URL; //example http://localhost:3000/api/auth
 
 
 export const fetchUserTasks = () => {
